@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-docker-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python-docker-app
+  template:
+    metadata:
+      labels:
+        app: python-docker-app
+    spec:
+      containers:
+      - name: python-docker
+        image: Yertugan/python-docker:v3
+        command: ["python3"]
+        args: [
+          "-m" , 
+          "flask", 
+          "run", 
+          "--host=0.0.0.0"
+        ]
+        ports:
+        - name: web
+          containerPort: 8000
+        livenessProbe:
+          httpGet:
+            port: 8000
+            path: /health
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 2
+        readinessProbe:
+          httpGet:
+            port: 8000
+            path: /health
+          initialDelaySeconds: 10
+          periodSeconds: 5
