@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  myproject:
+    ports:
+      - "8001:8000"
+
+  myproject-db:
+    ports:
+      - "5433:5432"

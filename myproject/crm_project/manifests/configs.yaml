@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myproject-config
+data:
+  SECRET_KEY: 7!%*_%*0x9*#-k*1$b$^dax14hu2tazzrvk5tvj@#7vlg*h0ni
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: myproject-secret
+type: Opaque
+data:
+  POSTGRES_DB: aHcy
+  POSTGRES_PASSWORD: cG9zdGdyZXM=
+  POSTGRES_USER: cG9zdGdyZXM=

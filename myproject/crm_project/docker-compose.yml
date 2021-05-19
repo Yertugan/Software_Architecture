@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  myproject:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=myuser
+      - SECRET_KEY=7!%*_%*0x9*#-k*1$b$^dax14hu2tazzrvk5tvj@#7vlg*h0ni
+    volumes:
+      - .:/code
+
+  myproject-db:
+    image: postgres:10.11-alpine
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=myuser

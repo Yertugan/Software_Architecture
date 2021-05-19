@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: myproject-db-statefulset
+spec:
+  serviceName: "myproject-db"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myproject-db
+  template:
+    metadata:
+      labels:
+        app: myproject-db
+    spec:
+      containers:
+      - name: myproject-db
+        image: postgres:10.11-alpine
+        ports:
+        - containerPort: 5432
+          name: myprojectdb
+        env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: myproject-secret
+                key: POSTGRES_DB
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: myproject-secret
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: myproject-secret
+                key: POSTGRES_USER
+        volumeMounts:
+        - name: myprojectdb
+          mountPath: /var/lib/postgresql/data
+          subPath: myproject-db
+  volumeClaimTemplates:
+  - metadata:
+      name: myprojectdb
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 1Gi
